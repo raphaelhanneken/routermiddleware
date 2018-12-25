@@ -7,7 +7,7 @@
     "require": {
         "php": "^7.2",
         "ext-json": "*",
-        "rhn/annotationrouter": "dev-master",
+        "rhn/annotationrouter": "^0.1",
         "psr/http-server-middleware": "^1.0",
         "psr/http-factory": "^1.0"
     },
