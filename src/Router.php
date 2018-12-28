@@ -20,6 +20,9 @@ class Router implements MiddlewareInterface
     /** @var ResponseFactoryInterface */
     private $responseFactory;
 
+    /** @var string */
+    private $attributeName = 'Request-Params';
+
     /**
      * Create a new Router instance
      *
@@ -52,7 +55,7 @@ class Router implements MiddlewareInterface
 
         $request = $request
             ->withAttribute($this->handlerAttribute, $routeInfo[1])
-            ->withAttribute('params', $routeInfo[2]);
+            ->withAttribute($this->attributeName, $routeInfo[2]);
 
         return $handler->handle($request);
     }
@@ -61,12 +64,37 @@ class Router implements MiddlewareInterface
      * Set the attribute name for the request handler
      *
      * @param string $handlerAttribute
-     * @return $this
+     * @return Router
      */
     public function withHandlerAttribute(string $handlerAttribute): self
     {
         $this->handlerAttribute = $handlerAttribute;
 
         return $this;
+    }
+
+    /**
+     * Set the attribute name under which the Uri params are saved within the
+     * request instance.
+     *
+     * @param string $newAttributeName
+     * @return Router
+     */
+    public function setAttributeName(string $newAttributeName): self
+    {
+        $this->attributeName = $newAttributeName;
+
+        return $this;
+    }
+
+    /**
+     * Get the attribute name under which the Uri params are saved within the
+     * request instance.
+     *
+     * @return string
+     */
+    public function getAttributeName(): string
+    {
+        return $this->attributeName;
     }
 }

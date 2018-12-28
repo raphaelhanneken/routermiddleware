@@ -38,9 +38,6 @@ class RouterTest extends TestCase
         ]);
     }
 
-    /**
-     * @covers \Middleware\Router::process
-     */
     public function testRouteOK(): void
     {
         $response = Dispatcher::run([
@@ -56,9 +53,6 @@ class RouterTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    /**
-     * @covers \Middleware\Router::process
-     */
     public function testRouteNotFound(): void
     {
         $response = Dispatcher::run([
@@ -68,9 +62,6 @@ class RouterTest extends TestCase
         $this->assertEquals(404, $response->getStatusCode());
     }
 
-    /**
-     * @covers \Middleware\Router::process
-     */
     public function testRouteNotAllowed(): void
     {
         $response = Dispatcher::run([
@@ -81,16 +72,13 @@ class RouterTest extends TestCase
         $this->assertEquals('GET', $response->getHeaderLine('Allow'));
     }
 
-    /**
-     * @covers \Middleware\Router::process
-     */
     public function testRouteWithParameters(): void
     {
         $response = Dispatcher::run([
             new Router($this->dispatcher, new DiactorosFactory()),
             function (RequestInterface $request) {
                 list($controller, $method) = explode(':', $request->getAttribute('Request-Handler'));
-                return call_user_func([new $controller, $method], $request->getAttribute('params'));
+                return call_user_func([new $controller, $method], $request->getAttribute('Request-Params'));
             }
         ], Factory::createServerRequest('GET', '/users/2'));
 
